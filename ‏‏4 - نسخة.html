@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>اختبار لتحديد مستوى المهارات الحاسوبية</title>
+<style>
+body { font-family: 'Traditional Arabic', Tahoma, Arial, sans-serif; background: linear-gradient(to bottom, #e6f0ff, #ffffff); margin:0; padding:0; }
+.container { width:90%; max-width:1000px; margin:20px auto; background:white; padding:30px 40px; box-shadow:0 0 25px rgba(0,0,0,0.1); border-radius:10px; }
+h1,h2 {margin-bottom:15px;}
+h1 {text-align:center; font-size:32px; font-weight:bold; color:#0B3D91;}
+h2 {font-size:24px; font-weight:bold; padding:12px; border-radius:5px; margin-bottom:15px;}
+p.info {font-size:16px;color:#333;margin:5px 0;}
+.question { margin-bottom:30px; padding:20px; background:white; box-shadow:0 2px 8px rgba(0,0,0,0.08); border-left:5px solid #0B3D91; border-radius:6px; transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); opacity:0; transform: translateY(20px) scale(0.98); }
+.question.show { opacity:1; transform: translateY(0) scale(1); }
+.question.axis1:hover { background: linear-gradient(90deg, #d0e2ff, #ffffff); transform: translateX(5px) scale(1.02); box-shadow: 5px 5px 15px rgba(0,0,0,0.15);}
+.question.axis2:hover { background: linear-gradient(90deg, #c0ffd4, #ffffff); transform: translateX(5px) scale(1.02); box-shadow: 5px 5px 15px rgba(0,0,0,0.15);}
+.question.axis3:hover { background: linear-gradient(90deg, #f0d9e6, #ffffff); transform: translateX(5px) scale(1.02); box-shadow: 5px 5px 15px rgba(0,0,0,0.15);}
+.options label { display:block; margin:8px 0; cursor:pointer; padding:10px 15px; border-radius:5px; transition: all 0.3s ease; }
+.question.axis1 .options label:hover {background: linear-gradient(90deg, #cce0ff, #ffffff); transform:translateX(3px) scale(1.02);}
+.question.axis2 .options label:hover {background: linear-gradient(90deg, #d0ffd8, #ffffff); transform:translateX(3px) scale(1.02);}
+.question.axis3 .options label:hover {background: linear-gradient(90deg, #f9e0f0, #ffffff); transform:translateX(3px) scale(1.02);}
+.options input[type="radio"] {margin-left:10px;}
+.options input[type="radio"]:checked + label { background: linear-gradient(90deg, #0B3D91, #4A7CFF); color:white; box-shadow: inset 0 0 8px rgba(0,0,0,0.3); transform: scale(1.03);}
+button { background: linear-gradient(45deg, #0B3D91, #4A7CFF); color:white; border:none; padding:12px 25px; font-size:17px; border-radius:12px; cursor:pointer; margin-top:15px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 6px rgba(11,61,145,0.3);}
+button:hover { background: linear-gradient(45deg, #072c6b, #2a5edb); transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 18px rgba(0,0,0,0.25), 0 0 8px rgba(11,61,145,0.4);}
+.result { margin-top:25px; padding:15px; font-weight:bold; font-size:18px; background: linear-gradient(120deg, #f0f5ff, #ffffff); border-left:6px solid #0B3D91; border-radius:6px; opacity:0; transform: translateY(-20px); transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.2);}
+.result.show { opacity:1; transform: translateY(0); animation: glow 1s ease-in-out; box-shadow:0 4px 25px rgba(11,61,145,0.7);}
+@keyframes glow {0% {box-shadow: 0 4px 15px rgba(0,0,0,0.2);} 50% {box-shadow: 0 4px 25px rgba(11,61,145,0.7);} 100% {box-shadow: 0 4px 15px rgba(0,0,0,0.2);}}
+input[type="text"] { padding:8px; font-size:16px; width:50%; border:1px solid #ccc; border-radius:5px; margin-bottom:10px; }
+#header { text-align:center; font-size:24px; font-weight:bold; color:#0B3D91; margin-bottom:25px; }
+#timer { font-size:18px; color:#0B3D91; margin-bottom:15px; font-weight:bold; text-align:center; }
+.instructions { background:#f5f5f5; padding:15px; border-radius:6px; margin-bottom:20px; border-left:5px solid #0B3D91; }
+.axis1 h2 {background: linear-gradient(90deg, #cce0ff, #e6f0ff);}
+.axis2 h2 {background: linear-gradient(90deg, #d0ffd4, #e6fff0);}
+.axis3 h2 {background: linear-gradient(90deg, #ffd9f0, #ffe6f5);}
+#timerBar { height:10px; background:#cce0ff; border-radius:5px; margin-bottom:15px; overflow:hidden; }
+#progress { height:100%; width:0%; background:#0B3D91; transition: width 1s; }
+#timer.red { animation: pulse 1s infinite; }
+@keyframes pulse {0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
+</style>
+</head>
+<body>
+<div class="container">
+<div id="header">إعداد المهندس: مهند محمد صابر المعراتي</div>
+<h1>اختبار لتحديد مستوى المهارات الحاسوبية</h1>
+<div class="instructions">
+<h2>تعليمات الاختبار</h2>
+<ol>
+<li>اقرأ كل سؤال بعناية قبل اختيار الإجابة.</li>
+<li>اختر إجابة واحدة فقط لكل سؤال.</li>
+<li>يتم تطبيق نظام تصحيح قائم على مبدأ (الخطأ يُلغي الصواب).</li>
+<li>يمنع استخدام الإنترنت أو الهاتف المحمول.</li>
+<li>الهدف من الاختبار هو تحديد المستوى التدريبي.</li>
+<li>مدة الاختبار: 35 دقيقة | عدد الأسئلة: 35 سؤال | الدرجة الكلية: 35 درجة</li>
+</ol>
+</div>
+
+<p class="info">الرجاء إدخال اسم المتدرب/ة لبدء الاختبار:</p>
+<input type="text" id="studentName" placeholder="أدخل اسمك هنا" />
+<button onclick="startExam()">ابدأ/ي الاختبار</button>
+
+<div id="timer">الوقت المتبقي: 35:00</div>
+<div id="timerBar"><div id="progress"></div></div>
+
+<div id="examContent" style="display:none;">
+<form id="examForm">
+<div id="questions"></div>
+<!-- أزرار الإرسال واكتشف الأخطاء -->
+<button type="button" onclick="calculateScore()">نتيجة الاختبار</button>
+<button type="button" onclick="showMistakes()" style="margin-left:10px; background: linear-gradient(45deg, #FF4C4C, #FF7C7C);">اكتشف أخطاؤك</button>
+</form>
+<div id="result" class="result"></div>
+<div id="mistakes" style="display:none; margin-top:20px;"></div>
+</div>
+
+<audio id="selectSound"><source src="https://www.soundjay.com/buttons/sounds/button-16.mp3" type="audio/mpeg"></audio>
+<audio id="timeEndSound"><source src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" type="audio/mpeg"></audio>
+<audio id="resultSound"><source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg"></audio>
+
+<script>
+// جميع الأسئلة
+const questions = [
+{axis:"axis1",q:"ما المقصود بالحاسب؟", options:["a) جهاز تخزين فقط","b) جهاز يستقبل البيانات ويعالجها ويعطي نتائج","c) برنامج تصميم","d) شاشة عرض"], correct:"b) جهاز يستقبل البيانات ويعالجها ويعطي نتائج"},
+{axis:"axis1",q:"دورة معالجة المعلومات تتكون من:", options:["a) إدخال – معالجة – إخراج – تخزين","b) طباعة – حذف – نسخ","c) حفظ – إغلاق – إعادة تشغيل","d) اتصال – تحميل – تصفح"], correct:"a) إدخال – معالجة – إخراج – تخزين"},
+{axis:"axis1",q:"لغة الحاسب الأساسية هي:", options:["a) الإنجليزية","b) العربية","c) النظام الثنائي (0 و1)","d) Java"], correct:"c) النظام الثنائي (0 و1)"},
+{axis:"axis1",q:"BIT تعني:", options:["a) وحدة تخزين صغيرة جداً","b) برنامج","c) معالج","d) شاشة"], correct:"a) وحدة تخزين صغيرة جداً"},
+{axis:"axis1",q:"أي مما يلي يُعتبر من وحدات الإدخال؟", options:["a) الشاشة","b) الطابعة","c) لوحة المفاتيح","d) السماعات"], correct:"c) لوحة المفاتيح"},
+{axis:"axis1",q:"أي مما يلي من وحدات الإخراج؟", options:["a) Scanner","b) Webcam","c) Monitor","d) Keyboard"], correct:"c) Monitor"},
+{axis:"axis1",q:"مكونات CPU الرئيسية هي:", options:["a) RAM – ROM","b) ALU – CU – Registers","c) HDD – SSD","d) Mouse – Keyboard"], correct:"b) ALU – CU – Registers"},
+{axis:"axis1",q:"RAM تتميز بأنها:", options:["a) دائمة","b) لا تفقد البيانات","c) مؤقتة","d) خارجية"], correct:"c) مؤقتة"},
+{axis:"axis1",q:"ROM تحتوي على:", options:["a) بيانات مؤقتة","b) تعليمات أساسية من المصنع","c) صور","d) فيديوهات"], correct:"b) تعليمات أساسية من المصنع"},
+{axis:"axis1",q:"أي تخزين يعتمد على الإنترنت؟", options:["a) HDD","b) USB","c) Cloud Storage","d) CD"], correct:"c) Cloud Storage"},
+{axis:"axis1",q:"SSD يتميز بأنه:", options:["a) أبطأ من HDD","b) أسرع وأقل تأثراً بالصدمات","c) يعمل بدون كهرباء","d) للتصوير فقط"], correct:"b) أسرع وأقل تأثراً بالصدمات"},
+{axis:"axis1",q:"عند قراءة مواصفات جهاز، الرام 8GB تعني:", options:["a) حجم الشاشة","b) حجم التخزين","c) حجم الذاكرة المؤقتة","d) نوع المعالج"], correct:"c) حجم الذاكرة المؤقتة"},
+{axis:"axis2",q:"سطح المكتب هو:", options:["a) برنامج","b) الواجهة الرئيسية بعد تشغيل الجهاز","c) ملف","d) مجلد"], correct:"b) الواجهة الرئيسية بعد تشغيل الجهاز"},
+{axis:"axis2",q:"قائمة ابدأ تُستخدم للوصول إلى:", options:["a) الشاشة فقط","b) البرامج والإعدادات","c) الإنترنت فقط","d) الطابعة"], correct:"b) البرامج والإعدادات"},
+{axis:"axis2",q:"شريط المهام يحتوي على:", options:["a) الملفات المحذوفة","b) البرامج المفتوحة","c) المعالج","d) الفيروسات"], correct:"b) البرامج المفتوحة"},
+{axis:"axis2",q:"الملف هو:", options:["a) حاوية للملفات","b) وحدة تخزين معلومات","c) برنامج","d) نظام تشغيل"], correct:"b) وحدة تخزين معلومات"},
+{axis:"axis2",q:"الامتداد .jpg يدل على:", options:["a) مستند","b) صورة","c) فيديو","d) برنامج"], correct:"b) صورة"},
+{axis:"axis2",q:"نسخ ملف يتم باختصار:", options:["a) Ctrl + V","b) Ctrl + C","c) Ctrl + X","d) Ctrl + Z"], correct:"b) Ctrl + C"},
+{axis:"axis2",q:"المسار (Path) هو:", options:["a) حجم الملف","b) عنوان مكان وجوده","c) نوعه","d) اسمه"], correct:"b) عنوان مكان وجوده"},
+{axis:"axis2",q:"إنشاء مستخدم جديد يفيد في:", options:["a) حذف البرامج","b) مشاركة الجهاز بأمان","c) تسريع الإنترنت","d) تكبير الشاشة"], correct:"b) مشاركة الجهاز بأمان"},
+{axis:"axis2",q:"Multiple Desktops تساعد على:", options:["a) زيادة الرام","b) تنظيم المهام","c) حذف الملفات","d) تثبيت برامج"], correct:"b) تنظيم المهام"},
+{axis:"axis2",q:"وضع Sleep يُستخدم من أجل:", options:["a) إغلاق كامل","b) حذف البيانات","c) توفير الطاقة مع حفظ العمل","d) فورمات"], correct:"c) توفير الطاقة مع حفظ العمل"},
+{axis:"axis2",q:"لإزالة برنامج نستخدم:", options:["a) Delete","b) الإعدادات أو لوحة التحكم","c) Word","d) Recycle Bin"], correct:"b) الإعدادات أو لوحة التحكم"},
+{axis:"axis2",q:"شريط أدوات Accessibility يُستخدم لـ:", options:["a) التصميم","b) مساعدة ذوي الاحتياجات","c) حذف الملفات","d) الطباعة"], correct:"b) مساعدة ذوي الاحتياجات"},
+{axis:"axis2",q:"لضغط ملف نستخدم:", options:["a) Rename","b) Compress","c) Format","d) Save"], correct:"b) Compress"},
+{axis:"axis3",q:"Word يُستخدم في:", options:["a) الجداول فقط","b) كتابة وتنسيق المستندات","c) العروض","d) البرمجة"], correct:"b) كتابة وتنسيق المستندات"},
+{axis:"axis3",q:"لإضافة رقم صفحة نستخدم:", options:["a) Insert → Page Number","b) Delete","c) Replace","d) Layout"], correct:"a) Insert → Page Number"},
+{axis:"axis3",q:"Styles تُستخدم من أجل:", options:["a) حذف النص","b) توحيد التنسيقات","c) تكبير الشاشة","d) إدراج صورة"], correct:"b) توحيد التنسيقات"},
+{axis:"axis3",q:"Track Changes تُستخدم لـ:", options:["a) الحركات","b) تتبع التعديلات","c) الرسم","d) الطباعة"], correct:"b) تتبع التعديلات"},
+{axis:"axis3",q:"الشريحة في PowerPoint هي:", options:["a) جدول","b) صفحة عرض","c) ملف صوت","d) معالج"], correct:"b) صفحة عرض"},
+{axis:"axis3",q:"Transitions تُستخدم بين:", options:["a) الكلمات","b) الشرائح","c) الصور","d) الخطوط"], correct:"b) الشرائح"},
+{axis:"axis3",q:"Animations تُستخدم لـ:", options:["a) تنسيق الفقرة","b) تحريك عناصر داخل الشريحة","c) حذف النص","d) حفظ الملف"], correct:"b) تحريك عناصر داخل الشريحة"},
+{axis:"axis3",q:"SUM في Excel تُستخدم لـ:", options:["a) العد","b) الجمع","c) الشرط","d) البحث"], correct:"b) الجمع"},
+{axis:"axis3",q:"IF في Excel تُستخدم لتنفيذ:", options:["a) تنسيق","b) شرط منطقي","c) إدراج صورة","d) رسم"], correct:"b) شرط منطقي"},
+{axis:"axis3",q:"VLOOKUP تُستخدم لـ:", options:["a) إنشاء شريحة","b) البحث عن قيمة في جدول","c) حذف صف","d) تغيير لون"], correct:"b) البحث عن قيمة في جدول"}
+];
+
+// عرض الأسئلة
+const containerDiv = document.getElementById("questions");
+let lastAxis = "";
+questions.forEach((item,index)=>{
+    if(item.axis!==lastAxis){
+        containerDiv.innerHTML += `<h2 class="${item.axis}">المحور ${item.axis.slice(-1)}</h2>`;
+        lastAxis=item.axis;
+    }
+    let html = `<div class="question ${item.axis}"><p><strong>${index+1}) ${item.q}</strong></p><div class="options">`;
+    item.options.forEach(opt=>{
+        html += `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`;
+    });
+    html += `</div></div>`;
+    containerDiv.innerHTML += html;
+});
+
+document.querySelectorAll('.question').forEach((q,i)=> { setTimeout(()=>{q.classList.add('show')}, i*100); });
+
+// أصوات
+document.querySelectorAll('input[type="radio"]').forEach(input=>{
+    input.addEventListener('change',()=>{ document.getElementById('selectSound').play(); });
+});
+
+// عداد تنازلي
+let timer; let timeLeft=35*60;let examFinished = false;
+function startTimer(){
+    const timerDiv = document.getElementById("timer");
+    const progress = document.getElementById("progress");
+    timerDiv.innerHTML = formatTime(timeLeft);
+    timer = setInterval(()=>{
+        timeLeft--;
+        timerDiv.innerHTML = formatTime(timeLeft);
+        progress.style.width = ((35*60 - timeLeft)/(35*60)*100)+"%";
+        if(timeLeft<=60){ timerDiv.style.color='red'; timerDiv.classList.add('red'); }
+        if(timeLeft<=0){ clearInterval(timer); document.getElementById('timeEndSound').play(); calculateScore(); alert("انتهى الوقت! سيتم عرض النتيجة النهائية."); }
+    },1000);
+}
+function formatTime(s){ const m=Math.floor(s/60); return `الوقت المتبقي: ${m.toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`; }
+
+function startExam(){
+    const student=document.getElementById("studentName").value.trim(); if(student===""){alert("ادخل اسمك!"); return;}
+    document.getElementById("examContent").style.display="block"; startTimer(); window.scrollTo(0,0);
+}
+
+function calculateScore(){
+    clearInterval(timer);
+    examFinished = true;
+    const student=document.getElementById("studentName").value.trim(); if(student===""){alert("ادخل اسمك!"); return;}
+    let correct=0, wrong=0, unanswered=0;
+    questions.forEach((item,index)=>{ let sel=document.querySelector(`input[name="q${index}"]:checked`); if(sel){ sel.value===item.correct?correct++:wrong++; }else{ unanswered++; } });
+    let finalScore=Math.max(correct-wrong,0);
+    let percentage=(finalScore/questions.length*100).toFixed(1);
+    let level=percentage<=43?"مبتدئ":percentage<=71?"متوسط":"متقدم";
+    const resultDiv=document.getElementById("result");
+    resultDiv.innerHTML=`النتيجة النهائية: ${percentage}%<br>عدد الإجابات الصحيحة: ${correct}<br>عدد الإجابات الخاطئة: ${wrong}<br>عدد الأسئلة التي تم تجاوزها: ${unanswered}<br>المستوى الحالي : ${level}<br><br> لا تقلقوا سيكون كل شيء على ما يرام مع تمنياتي بالتوفيق والمثابرة في تدريبنا هذا أ.${student}<br><strong>م. مهند المعراتي</strong>`;
+    resultDiv.classList.add("show");
+    document.getElementById('resultSound').play();
+    document.querySelectorAll('#examForm input[type="radio"]').forEach(i=>i.disabled=true);
+    const submitBtn=document.querySelector('#examForm button'); submitBtn.disabled=true; submitBtn.style.opacity=0.6; submitBtn.style.cursor='not-allowed';
+}
+
+// دالة عرض الأخطاء
+function showMistakes(){
+     if(!examFinished){
+    alert("يجب إنهاء الاختبار أولاً لعرض الأخطاء.");
+    return;
+}
+    const mistakesDiv = document.getElementById("mistakes");
+    mistakesDiv.innerHTML = "";
+
+    let tableHTML = `
+    <h2 style="color:#0B3D91; text-align:center; margin-bottom:10px;">الأخطاء في الاختبار</h2>
+    <table style="width:100%; border-collapse: collapse; font-size:16px; text-align:right;">
+        <thead>
+            <tr style="background: linear-gradient(90deg, #FFE6E6, #FFD9D9); color:#0B3D91;">
+                <th style="border:1px solid #0B3D91; padding:8px;">رقم السؤال</th>
+                <th style="border:1px solid #0B3D91; padding:8px;">صيغة السؤال</th>
+                <th style="border:1px solid #0B3D91; padding:8px;">إجابتك</th>
+                <th style="border:1px solid #0B3D91; padding:8px;">الإجابة الصحيحة</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+    let rowColor = false;
+
+    questions.forEach((item,index)=>{
+        let sel = document.querySelector(`input[name="q${index}"]:checked`);
+        if(sel && sel.value !== item.correct){
+            let bgColor = rowColor ? "#FFF0F0" : "#FFECEC";
+            rowColor = !rowColor;
+            tableHTML += `
+            <tr style="border:1px solid #0B3D91; background:${bgColor}; transition: all 0.3s;">
+                <td style="border:1px solid #0B3D91; padding:6px;">${index+1}</td>
+                <td style="border:1px solid #0B3D91; padding:6px;">${item.q}</td>
+                <td style="border:1px solid #0B3D91; padding:6px; color:#FF4C4C;">${sel.value} ❌</td>
+                <td style="border:1px solid #0B3D91; padding:6px; color:#0B3D91;">${item.correct} ✅</td>
+            </tr>`;
+        }
+    });
+
+    tableHTML += `</tbody></table>`;
+    mistakesDiv.innerHTML = tableHTML;
+    mistakesDiv.style.display = "block";
+
+    window.scrollTo({ top: mistakesDiv.offsetTop-20, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
